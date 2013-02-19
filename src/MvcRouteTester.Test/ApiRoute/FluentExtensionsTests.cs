@@ -1,19 +1,18 @@
-﻿using System.Net.Http;
+﻿//
+using System.Net.Http;
 using System.Web.Http;
-
+//
 using MvcRouteTester.Test.ApiControllers;
-
-using NUnit.Framework;
+//
+using Xunit;
 
 namespace MvcRouteTester.Test.ApiRoute
 {
-	[TestFixture]
 	public class FluentExtensionsTests
 	{
 		private HttpConfiguration config;
 
-		[SetUp]
-		public void MakeRouteTable()
+        public FluentExtensionsTests()
 		{
 			config = new HttpConfiguration();
 
@@ -23,19 +22,19 @@ namespace MvcRouteTester.Test.ApiRoute
 				defaults: new { id = RouteParameter.Optional });
 		}
 
-		[Test]
+		[Fact]
 		public void SimpleTest()
 		{
 			config.ShouldMap("/api/customer/32").To<CustomerController>(HttpMethod.Get, x => x.Get(32));
 		}
 
-		[Test]
+		[Fact]
 		public void TestNoRouteForMethod()
 		{
 			config.ShouldMap("/api/customer/32").ToNoMethod<CustomerController>(HttpMethod.Post);
 		}
 
-		[Test]
+		[Fact]
 		public void TestNoRoute()
 		{
 			config.ShouldMap("/pai/customer/32").ToNoRoute();

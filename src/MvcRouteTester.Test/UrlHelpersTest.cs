@@ -1,129 +1,131 @@
-﻿using NUnit.Framework;
+﻿//
+
+using FluentAssertions;
+using Xunit;
 
 namespace MvcRouteTester.Test
 {
-	[TestFixture]
 	public class UrlHelpersTest
 	{
-		[Test]
+		[Fact]
 		public void AbsoluteUrlIsUnchanged()
 		{
 			var outputUrl = UrlHelpers.MakeAbsolute("http://foo.com");
 
-			Assert.That(outputUrl, Is.EqualTo("http://foo.com"));
+			outputUrl.ShouldBeEquivalentTo("http://foo.com");
 		}
 
-		[Test]
+		[Fact]
 		public void AbsoluteHttpsUrlIsUnchanged()
 		{
 			var outputUrl = UrlHelpers.MakeAbsolute("https://bar.com");
 
-			Assert.That(outputUrl, Is.EqualTo("https://bar.com"));
+			outputUrl.ShouldBeEquivalentTo("https://bar.com");
 		}
 
-		[Test]
+		[Fact]
 		public void FtpHttpsUrlIsUnchanged()
 		{
 			var outputUrl = UrlHelpers.MakeAbsolute("ftp://bar.com/filez.zip");
 
-			Assert.That(outputUrl, Is.EqualTo("ftp://bar.com/filez.zip"));
+			outputUrl.ShouldBeEquivalentTo("ftp://bar.com/filez.zip");
 		}
 
-		[Test]
+		[Fact]
 		public void EmptyRelativeTildeUrlIsPrefixed()
 		{
 			var outputUrl = UrlHelpers.MakeAbsolute("~/");
 
-			Assert.That(outputUrl, Is.EqualTo("http://site.com/"));
+			outputUrl.ShouldBeEquivalentTo("http://site.com/");
 		}
 
-		[Test]
+		[Fact]
 		public void EmptyRelativeSlashUrlIsPrefixed()
 		{
 			var outputUrl = UrlHelpers.MakeAbsolute("/");
 
-			Assert.That(outputUrl, Is.EqualTo("http://site.com/"));
+			outputUrl.ShouldBeEquivalentTo("http://site.com/");
 		}
 
-		[Test]
+		[Fact]
 		public void NonEmptyTildeRelativeUrlIsPrefixed()
 		{
 			var outputUrl = UrlHelpers.MakeAbsolute("~/customers/1");
 
-			Assert.That(outputUrl, Is.EqualTo("http://site.com/customers/1"));
+			outputUrl.ShouldBeEquivalentTo("http://site.com/customers/1");
 		}
 
-		[Test]
+		[Fact]
 		public void NonEmptySlashRelativeUrlIsPrefixed()
 		{
 			var outputUrl = UrlHelpers.MakeAbsolute("/customers/1");
 
-			Assert.That(outputUrl, Is.EqualTo("http://site.com/customers/1"));
+			outputUrl.ShouldBeEquivalentTo("http://site.com/customers/1");
 		}
 
-		[Test]
+		[Fact]
 		public void SlashPathHasTildePrended()
 		{
 			var outputUrl = UrlHelpers.PrependTilde("/");
 
-			Assert.That(outputUrl, Is.EqualTo("~/"));
+			outputUrl.ShouldBeEquivalentTo("~/");
 		}
 
-		[Test]
+		[Fact]
 		public void TildeSlashPathIsUnchanged()
 		{
 			var outputUrl = UrlHelpers.PrependTilde("~/");
 
-			Assert.That(outputUrl, Is.EqualTo("~/"));
+			outputUrl.ShouldBeEquivalentTo("~/");
 		}
 
-		[Test]
+		[Fact]
 		public void PathWithTildeIsUnchanged()
 		{
 			var outputUrl = UrlHelpers.PrependTilde("~/customers/1");
 
-			Assert.That(outputUrl, Is.EqualTo("~/customers/1"));
+			outputUrl.ShouldBeEquivalentTo("~/customers/1");
 		}
 
-		[Test]
+		[Fact]
 		public void PathHasTildePrepended()
 		{
 			var outputUrl = UrlHelpers.PrependTilde("/customers/1") ;
 
-			Assert.That(outputUrl, Is.EqualTo("~/customers/1"));
+			outputUrl.ShouldBeEquivalentTo("~/customers/1");
 		}
 
-		[Test]
+		[Fact]
 		public void UrlWithNoQueryParamsIsParsed()
 		{
 			const string Url = "/foo/bar";
 
 			var parsedParams = UrlHelpers.MakeQueryParams(Url);
 
-			Assert.That(parsedParams.Count, Is.EqualTo(0));
+			parsedParams.Count.ShouldBeEquivalentTo(0);
 		}
 
-		[Test]
+		[Fact]
 		public void UrlWithOneQueryParamsIsParsed()
 		{
 			const string Url = "/foo/bar?id=3";
 
 			var parsedParams = UrlHelpers.MakeQueryParams(Url);
 
-			Assert.That(parsedParams.Count, Is.EqualTo(1));
-			Assert.That(parsedParams["id"], Is.EqualTo("3"));
+			parsedParams.Count.ShouldBeEquivalentTo(1);
+			parsedParams["id"].ShouldBeEquivalentTo("3");
 		}
 
-		[Test]
+		[Fact]
 		public void UrlWithTwoQueryParamsIsParsed()
 		{
 			const string Url = "/foo/bar?name=fish&fish=trout";
 
 			var parsedParams = UrlHelpers.MakeQueryParams(Url);
 
-			Assert.That(parsedParams.Count, Is.EqualTo(2));
-			Assert.That(parsedParams["name"], Is.EqualTo("fish"));
-			Assert.That(parsedParams["fish"], Is.EqualTo("trout"));
+			parsedParams.Count.ShouldBeEquivalentTo(2);
+			parsedParams["name"].ShouldBeEquivalentTo("fish");
+            parsedParams["fish"].ShouldBeEquivalentTo("trout");
 		}
 	}
 }

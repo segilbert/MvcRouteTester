@@ -1,23 +1,25 @@
-﻿using System;
-
-using NUnit.Framework;
+﻿//
+using System;
+//
+using Xunit;
+//
+using FluentAssertions;
 
 namespace MvcRouteTester.Test
 {
-	[TestFixture]
 	public class PropertyReaderTests
 	{
-		[Test]
+		[Fact]
 		public void ShouldReadEmptyObject()
 		{
 			var reader = new PropertyReader();
 			var properties = reader.Properties(new object());
-
-			Assert.That(properties, Is.Not.Null);
-			Assert.That(properties.Count, Is.EqualTo(0));
+		    
+            properties.Should().NotBeNull();
+            properties.Count.ShouldBeEquivalentTo(0);
 		}
 
-		[Test]
+		[Fact]
 		public void ShouldNotReadNullObject()
 		{
 			var reader = new PropertyReader();
@@ -25,28 +27,28 @@ namespace MvcRouteTester.Test
 			Assert.Throws<ArgumentNullException>(() => reader.Properties(null));
 		}
 
-		[Test]
+		[Fact]
 		public void ShouldReadPropertiesOfAnonObject()
 		{
 			var reader = new PropertyReader();
 			var properties = reader.Properties(new { Foo = 1, Bar = "Two" });
 
-			Assert.That(properties, Is.Not.Null);
-			Assert.That(properties.Count, Is.EqualTo(2));
-			Assert.That(properties["Foo"], Is.EqualTo("1"));
-			Assert.That(properties["Bar"], Is.EqualTo("Two"));
+			properties.Should().NotBeNull();
+            properties.Count.ShouldBeEquivalentTo(2);
+            properties["Foo"].ShouldBeEquivalentTo("1");
+            properties["Bar"].ShouldBeEquivalentTo("Two");
 		}
 
-		[Test]
+		[Fact]
 		public void ShouldReadPropertyValueNull()
 		{
 			var reader = new PropertyReader();
 			var properties = reader.Properties(new { Foo = 1, Bar = (string)null });
 
-			Assert.That(properties, Is.Not.Null);
-			Assert.That(properties.Count, Is.EqualTo(2));
-			Assert.That(properties["Foo"], Is.EqualTo("1"));
-			Assert.That(properties["Bar"], Is.Null);
+            properties.Should().NotBeNull();
+            properties.Count.ShouldBeEquivalentTo(2);
+            properties["Foo"].ShouldBeEquivalentTo("1");
+            properties["Bar"].Should().BeNull();
 		}
 	}
 }

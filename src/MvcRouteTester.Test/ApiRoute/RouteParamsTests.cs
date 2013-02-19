@@ -1,17 +1,16 @@
-﻿using System.Net.Http;
+﻿//
+using System.Net.Http;
 using System.Web.Http;
-
-using NUnit.Framework;
+//
+using Xunit;
 
 namespace MvcRouteTester.Test.ApiRoute
 {
-	[TestFixture]
 	public class RouteParamsTests
 	{
 		private HttpConfiguration config;
 
-		[SetUp]
-		public void MakeRouteTable()
+        public RouteParamsTests()
 		{
 			config = new HttpConfiguration();
 
@@ -21,13 +20,13 @@ namespace MvcRouteTester.Test.ApiRoute
 				defaults: new { id = RouteParameter.Optional });
 		}
 		
-		[Test]
+		[Fact]
 		public void HasRouteWithParams()
 		{
 			RouteAssert.HasApiRoute(config, "/api/customer/1?foo=1&bar=2", HttpMethod.Get);
 		}
 
-		[Test]
+		[Fact]
 		public void HasRouteWithParamsCapturesValues()
 		{
 			var expectedRoute = new { controller = "customer", action = "get", id = "1", foo = "1", bar = "2" };

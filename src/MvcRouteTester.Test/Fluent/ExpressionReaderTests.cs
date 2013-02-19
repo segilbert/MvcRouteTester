@@ -1,10 +1,12 @@
-﻿using System;
+﻿//
+using System;
 using System.Linq.Expressions;
 using System.Web.Mvc;
-
+//
+using FluentAssertions;
 using MvcRouteTester.Fluent;
-
-using NUnit.Framework;
+//
+using Xunit;
 
 namespace MvcRouteTester.Test.Fluent
 {
@@ -22,10 +24,9 @@ namespace MvcRouteTester.Test.Fluent
 
 	}
 
-	[TestFixture]
 	public class ExpressionReaderTests
 	{
-		[Test]
+		[Fact]
 		public void ReadNullActionResultThrowsException()
 		{
 			var reader = new ExpressionReader();
@@ -34,7 +35,7 @@ namespace MvcRouteTester.Test.Fluent
 			Assert.Throws<ArgumentNullException>(() => reader.Read(args));
 		}
 
-		[Test]
+		[Fact]
 		public void ReadReturnsDictionary()
 		{
 			var reader = new ExpressionReader();
@@ -42,11 +43,11 @@ namespace MvcRouteTester.Test.Fluent
 			Expression<Func<TestController, ActionResult>> args = c => c.Index();
 			var result = reader.Read(args);
 
-			Assert.That(result, Is.Not.Null);
-			Assert.That(result.Count, Is.GreaterThan(0));
+		    result.Should().NotBeNull();
+			result.Count.Should().BeGreaterThan(0);
 		}
 
-		[Test]
+		[Fact]
 		public void ReadGetsControllerAndAction()
 		{
 			var reader = new ExpressionReader();
@@ -54,11 +55,11 @@ namespace MvcRouteTester.Test.Fluent
 			Expression<Func<TestController, ActionResult>> args = c => c.Index();
 			var result = reader.Read(args);
 
-			Assert.That(result["controller"], Is.EqualTo("Test"));
-			Assert.That(result["action"], Is.EqualTo("Index"));
+			result["controller"].ShouldBeEquivalentTo("Test");
+			result["action"].ShouldBeEquivalentTo("Index");
 		}
 
-		[Test]
+		[Fact]
 		public void ReadGetsMethodParams()
 		{
 			var reader = new ExpressionReader();
@@ -66,9 +67,9 @@ namespace MvcRouteTester.Test.Fluent
 			Expression<Func<TestController, ActionResult>> args = c => c.GetItem(42);
 			var result = reader.Read(args);
 
-			Assert.That(result["controller"], Is.EqualTo("Test"));
-			Assert.That(result["action"], Is.EqualTo("GetItem"));
-			Assert.That(result["id"], Is.EqualTo("42"));
+            result["controller"].ShouldBeEquivalentTo("Test");
+            result["action"].ShouldBeEquivalentTo("GetItem");
+			result["id"].ShouldBeEquivalentTo("42");
 		}
 	}
 }

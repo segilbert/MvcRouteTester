@@ -1,17 +1,16 @@
-﻿using System.Web.Mvc;
+﻿//
+using System.Web.Mvc;
 using System.Web.Routing;
-
-using NUnit.Framework;
+//
+using Xunit;
 
 namespace MvcRouteTester.Test.WebRoute
 {
-	[TestFixture]
 	public class IgnoredRouteTest
 	{
 		private RouteCollection routes;
 
-		[SetUp]
-		public void MakeRouteTable()
+        public IgnoredRouteTest()
 		{
 			routes = new RouteCollection();
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -22,25 +21,25 @@ namespace MvcRouteTester.Test.WebRoute
 			);
 		}
 
-		[Test]
+		[Fact]
 		public void IgnoredRouteIsFound()
 		{
 			RouteAssert.HasRoute(routes, "fred.axd");
 		}
 
-		[Test]
+		[Fact]
 		public void NormalRouteIsFound()
 		{
 			RouteAssert.HasRoute(routes, "foo/bar/1");
 		}
 
-		[Test]
+		[Fact]
 		public void IgnoredRouteIsIgnored()
 		{
 			RouteAssert.IsIgnoredRoute(routes, "fred.axd");
 		}
 
-		[Test]
+		[Fact]
 		public void NormalRouteIsNotIgnored()
 		{
 			RouteAssert.IsNotIgnoredRoute(routes, "foo/bar/1");

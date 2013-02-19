@@ -1,17 +1,16 @@
-﻿using System.Web.Mvc;
+﻿//
+using System.Web.Mvc;
 using System.Web.Routing;
-
-using NUnit.Framework;
+//
+using Xunit;
 
 namespace MvcRouteTester.Test.WebRoute
 {
-	[TestFixture]
 	public class RouteValuesTest
 	{
 		private RouteCollection routes;
 
-		[SetUp]
-		public void MakeRouteTable()
+        public RouteValuesTest()
 		{
 			routes = new RouteCollection();
 			routes.MapRoute(
@@ -26,14 +25,14 @@ namespace MvcRouteTester.Test.WebRoute
 
 		}
 
-		[Test]
+		[Fact]
 		public void HomeRouteCapturesId()
 		{
 			var expectedRoute = new { controller = "Home", action = "Index", id = 42 };
 			RouteAssert.HasRoute(routes, "/home/Index/42", expectedRoute);
 		}
 
-		[Test]
+		[Fact]
 		public void RouteCapturesTwoValues()
 		{
 			var expectedRoute = new { controller = "Foo", action = "Bar", name = "betsy", pony = "trotter" };

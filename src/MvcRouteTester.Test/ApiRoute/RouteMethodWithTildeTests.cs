@@ -1,17 +1,16 @@
-﻿using System.Net.Http;
+﻿//
+using System.Net.Http;
 using System.Web.Http;
-
-using NUnit.Framework;
+//
+using Xunit;
 
 namespace MvcRouteTester.Test.ApiRoute
 {
-	[TestFixture]
 	public class RouteMethodWithTildeTests
 	{
 		private HttpConfiguration config;
 
-		[SetUp]
-		public void MakeRouteTable()
+        public RouteMethodWithTildeTests()
 		{
 			config = new HttpConfiguration();
 
@@ -21,25 +20,25 @@ namespace MvcRouteTester.Test.ApiRoute
 				defaults: new { id = RouteParameter.Optional });
 		}
 
-		[Test]
+		[Fact]
 		public void CustomerControllerHasGetMethod_WithSlash()
 		{
 			RouteAssert.HasApiRoute(config, "~/api/customer/1", HttpMethod.Get);
 		}
 
-		[Test]
+		[Fact]
 		public void CustomerControllerDoesNotHavePostMethod()
 		{
 			RouteAssert.ApiRouteDoesNotHaveMethod(config, "~/api/customer/1", HttpMethod.Post);
 		}
 
-		[Test]
+		[Fact]
 		public void PostOnlyControllerHasPostMethod()
 		{
 			RouteAssert.HasApiRoute(config, "~/api/postonly/1", HttpMethod.Post);
 		}
 
-		[Test]
+		[Fact]
 		public void PostOnlyControllerDoesNotHaveGetMethod()
 		{
 			RouteAssert.ApiRouteDoesNotHaveMethod(config, "~/api/postonly/1", HttpMethod.Get);

@@ -1,20 +1,30 @@
-﻿using NUnit.Framework;
+﻿//
+using System;
+//
+using Xunit;
+
 
 namespace MvcRouteTester.Test
 {
-	[TestFixture]
 	public class AssertsTests
 	{
-		[Test]
+		[Fact]
 		public void EqualStringsPass()
 		{
-			Asserts.StringsEqualIgnoringCase("foo", "foo", "fail");
+			"foo".ShouldEqualWithDiff("foo", "fail");
 		}
 
-		[Test]
-		public void DifferentCaseStringsPass()
+        [Fact]
+		public void EqualStringsOnlyDifferentCaseStringsWithIgnoreCasePass()
 		{
-			Asserts.StringsEqualIgnoringCase("foo", "Foo", "fail");
+			"foo".ShouldEqualWithDiff("Foo", StringComparison.OrdinalIgnoreCase, "fail");
 		}
+
+        [Fact]
+        public void DifferentCaseStringsCheckCaseFail()
+        {
+            "foo".ShouldNotEqualWithDiff("Foo", "fail");
+        }
+	
 	}
 }

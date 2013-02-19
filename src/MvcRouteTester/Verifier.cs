@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MvcRouteTester
 {
@@ -23,7 +24,7 @@ namespace MvcRouteTester
 				var mismatchErrorMessage = string.Format("Expected '{0}', not '{1}' for '{2}' at url '{3}''.",
 					expectedValue, actualValue, propertyKey, url);
 
-				Asserts.StringsEqualIgnoringCase(expectedValue, actualValue, mismatchErrorMessage);
+				Asserts.ShouldEqualWithDiff(expectedValue, actualValue, StringComparison.OrdinalIgnoreCase, mismatchErrorMessage);
 
 				expectationsDone++;
 			}

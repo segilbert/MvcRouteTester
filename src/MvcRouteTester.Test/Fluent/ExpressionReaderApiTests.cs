@@ -1,10 +1,12 @@
-﻿using System;
+﻿//
+using System;
 using System.Linq.Expressions;
 using System.Web.Http;
-
+//
+using FluentAssertions;
 using MvcRouteTester.Fluent;
-
-using NUnit.Framework;
+//
+using Xunit;
 
 namespace MvcRouteTester.Test.Fluent
 {
@@ -22,10 +24,9 @@ namespace MvcRouteTester.Test.Fluent
 
 	}
 
-	[TestFixture]
 	public class ExpressionReaderApiTests
 	{
-		[Test]
+		[Fact]
 		public void ReadNullObjectThrowsException()
 		{
 			var reader = new ExpressionReader();
@@ -34,7 +35,7 @@ namespace MvcRouteTester.Test.Fluent
 			Assert.Throws<ArgumentNullException>(() => reader.Read(args));
 		}
 
-		[Test]
+		[Fact]
 		public void ReadApiReturnsDictionary()
 		{
 			var reader = new ExpressionReader();
@@ -42,11 +43,11 @@ namespace MvcRouteTester.Test.Fluent
 			Expression<Func<TestApiController, object>> args = c => c.Get();
 			var result = reader.Read(args);
 
-			Assert.That(result, Is.Not.Null);
-			Assert.That(result.Count, Is.GreaterThan(0));
+			result.Should().NotBeNull();
+			result.Count.Should().BeGreaterThan(0);
 		}
 
-		[Test]
+		[Fact]
 		public void ReadGetsApiControllerAndAction()
 		{
 			var reader = new ExpressionReader();
@@ -54,11 +55,11 @@ namespace MvcRouteTester.Test.Fluent
 			Expression<Func<TestApiController, object>> args = c => c.Get();
 			var result = reader.Read(args);
 
-			Assert.That(result["controller"], Is.EqualTo("TestApi"));
-			Assert.That(result["action"], Is.EqualTo("Get"));
+			result["controller"].ShouldBeEquivalentTo("TestApi");
+			result["action"].ShouldBeEquivalentTo("Get");
 		}
 
-		[Test]
+		[Fact]
 		public void ReadGetsMethodParam()
 		{
 			var reader = new ExpressionReader();
@@ -66,9 +67,9 @@ namespace MvcRouteTester.Test.Fluent
 			Expression<Func<TestApiController, object>> args = c => c.Post(42);
 			var result = reader.Read(args);
 
-			Assert.That(result["controller"], Is.EqualTo("TestApi"));
-			Assert.That(result["action"], Is.EqualTo("Post"));
-			Assert.That(result["id"], Is.EqualTo("42"));
+            result["controller"].ShouldBeEquivalentTo("TestApi");
+            result["action"].ShouldBeEquivalentTo("Post");
+			result["id"].ShouldBeEquivalentTo("42");
 		}
 	}
 }

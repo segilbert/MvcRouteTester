@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Web;
-using Moq;
+using NSubstitute;
 
 namespace MvcRouteTester
 {
@@ -13,12 +13,12 @@ namespace MvcRouteTester
 			var relativeUrl = routeParts[0];
 			var queryParams = UrlHelpers.MakeQueryParams(url);
 
-			var httpContextMock = new Mock<HttpContextBase>();
-			httpContextMock.Setup(c => c.Request.AppRelativeCurrentExecutionFilePath).Returns(relativeUrl);
-			httpContextMock.Setup(c => c.Request.QueryString).Returns(queryParams);
-			httpContextMock.Setup(c => c.Request.Params).Returns(queryParams);
-			httpContextMock.Setup(c => c.Request.PathInfo).Returns(string.Empty);
-			return httpContextMock.Object;
+			var httpContextMock = Substitute.For<HttpContextBase>();
+            httpContextMock.Request.AppRelativeCurrentExecutionFilePath.Returns(relativeUrl);
+            httpContextMock.Request.QueryString.Returns(queryParams);
+			httpContextMock.Request.Params.Returns(queryParams);
+			httpContextMock.Request.PathInfo.Returns(string.Empty);
+			return httpContextMock;
 		}
 	}
 }

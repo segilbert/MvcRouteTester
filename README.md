@@ -13,7 +13,7 @@ To aid automated testing by allowing unit tests on routes. Without such a librar
 
 MvcRouteTester relies on [XUnit](http://xunit.codeplex.com/), [NSubstitute](http://nsubstitute.github.com/). But if you needed to use other equivalent libraries for assertions and mocks, it should be easy to swap out these dependencies in the source.
 
-MvcRouteTester is using [FluentAssertions](http://fluentassertions.codeplex.com/), and a version of [TestHelper](https://gist.github.com/sinairv/1615334) extension methods ( frozenbyts latest forked version of [TestHelper](https://gist.github.com/segilbert/4982547) ).
+MvcRouteTester.Test is using [FluentAssertions](http://fluentassertions.codeplex.com/), and a version of [TestHelper](https://gist.github.com/sinairv/1615334) extension methods ( frozenbyts latest forked version of [TestHelper](https://gist.github.com/segilbert/4982547) ).
 
 ## Credits
 

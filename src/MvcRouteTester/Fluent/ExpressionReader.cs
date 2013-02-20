@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using ServiceStack.Text;
 
 namespace MvcRouteTester.Fluent
 {
@@ -61,15 +62,25 @@ namespace MvcRouteTester.Fluent
 			for (int i = 0; i < parameters.Length; i++)
 			{
 				var expectedValue = GetExpectedValue(arguments[i]);
+
+                // Convention -> Type Name contains 'Model' convert to JSON
+                if (IsNotCoreType(arguments[i].Type)) //.Name.Contains("Model"))
+                    expectedValue = expectedValue.SerializeToString();
+                
 				var expectedString = expectedValue != null ? expectedValue.ToString() : null;
 
 				values.Add(parameters[i].Name, expectedString);
 			}
 		}
 
+        private bool IsNotCoreType(Type type)
+        {
+            return (type != typeof(object) && Type.GetTypeCode(type) == TypeCode.Object);
+        }
+
 		private static object GetExpectedValue(Expression argumentExpression)
 		{
-			switch (argumentExpression.NodeType)
+            switch (argumentExpression.NodeType)
 			{
 				case ExpressionType.Constant:
 					return ((ConstantExpression)argumentExpression).Value;

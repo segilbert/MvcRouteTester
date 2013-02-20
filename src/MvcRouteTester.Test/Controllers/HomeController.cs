@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿//
+using System.Web.Mvc;
+//
+using MvcRouteTester.Test.Models;
 
 namespace MvcRouteTester.Test.Controllers
 {
@@ -8,5 +11,17 @@ namespace MvcRouteTester.Test.Controllers
 		{
 			return new EmptyResult();
 		}
+
+        [HttpPost]
+        public ActionResult Test(string url)
+        {
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult Test(LoginModel model, string returnUrl)
+        {
+            return new ViewResult();
+        }
 	}
 }

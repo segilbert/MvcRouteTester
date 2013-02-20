@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MvcRouteTester</id>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <authors>Anthony Steele, Sean Gilbert</authors>
     <owners>Sean Gilbert</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
@@ -13,6 +13,11 @@
     This is a modification of Anthony Steele's implementation, just switching out NUnit and Moq for xUnit and NSubstitute.  MvcRouteTester is a .Net library to help unit testing ASP MVC route tables. It contains asserts for for both regular controllers and the Api controllers that are new in MVC 4.0. It is built in .Net 4.5 and ASP MVC 4.0 with xUnit, NSubstitute.
     </summary>
     <releaseNotes>
+      
+      Release 1.1.1:
+      Added support for comparing object parameters using JSON
+
+      Release 1.1.0:
       Replaced NUnit and Moq with xUnit and NSubstitute.
 
       Added FluentAssertions, TestHelper extensions and tweaked all unit tests to use Fluent Assertions.
